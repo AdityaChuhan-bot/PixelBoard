@@ -83,7 +83,7 @@ public final class GboardLiquidGlassRuntime {
     private static boolean isDarkMode(View view) {
         int mode = view.getResources().getConfiguration().uiMode
                 & Configuration.UI_MODE_NIGHT_MASK;
-        return mode != Configuration.UI_MODE_NIGHT_NO;
+        return mode == Configuration.UI_MODE_NIGHT_YES;
     }
 
     private static void applySurface(View view, boolean dark, boolean action) {
