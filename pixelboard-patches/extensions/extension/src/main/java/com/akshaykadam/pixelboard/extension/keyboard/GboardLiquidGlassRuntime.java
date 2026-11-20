@@ -4,6 +4,7 @@ import android.content.res.Configuration;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
 import android.view.View;
@@ -94,9 +95,13 @@ public final class GboardLiquidGlassRuntime {
             return;
         }
 
-        Drawable surface = createSurface(view, dark, action);
-        view.setBackground(surface);
-        APPLIED.put(view, new AppliedSurface(surface, dark, action));
+        Drawable original = view.getBackground();
+        Drawable glass = createSurface(view, dark, action);
+        LayerDrawable composed = original == null
+                ? new LayerDrawable(new Drawable[] { glass })
+                : new LayerDrawable(new Drawable[] { original, glass });
+        view.setBackground(composed);
+        APPLIED.put(view, new AppliedSurface(composed, dark, action));
     }
 
     private static Drawable createSurface(View view, boolean dark, boolean action) {

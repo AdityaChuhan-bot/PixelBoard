@@ -1,6 +1,8 @@
 package com.akshaykadam.pixelboard.extension.keyboard;
 
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.RippleDrawable;
 import android.widget.FrameLayout;
 
@@ -22,7 +24,10 @@ public class GboardLiquidGlassRuntimeTest {
         GboardLiquidGlassRuntime.applyToKeyboard(root);
 
         Assert.assertNotNull(root.getBackground());
-        Assert.assertTrue(root.getBackground() instanceof RippleDrawable);
+        Assert.assertTrue(root.getBackground() instanceof LayerDrawable);
+        LayerDrawable layers = (LayerDrawable) root.getBackground();
+        Assert.assertEquals(1, layers.getNumberOfLayers());
+        Assert.assertTrue(layers.getDrawable(0) instanceof RippleDrawable);
     }
 
     @Test
@@ -34,6 +39,20 @@ public class GboardLiquidGlassRuntimeTest {
         GboardLiquidGlassRuntime.applyToKeyboard(root);
 
         Assert.assertSame(first, root.getBackground());
+    }
+
+    @Test
+    public void existingKeyboardBackgroundIsPreservedUnderGlassLayer() {
+        FrameLayout root = new FrameLayout(RuntimeEnvironment.getApplication());
+        ColorDrawable original = new ColorDrawable(0xFF123456);
+        root.setBackground(original);
+
+        GboardLiquidGlassRuntime.applyToKeyboard(root);
+
+        LayerDrawable layers = (LayerDrawable) root.getBackground();
+        Assert.assertEquals(2, layers.getNumberOfLayers());
+        Assert.assertSame(original, layers.getDrawable(0));
+        Assert.assertTrue(layers.getDrawable(1) instanceof RippleDrawable);
     }
 
     @Test
