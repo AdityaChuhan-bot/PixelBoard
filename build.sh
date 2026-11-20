@@ -96,7 +96,10 @@ echo "=== 🔨 Applying Patches to $INPUT_APK ==="
 mkdir -p output
 mkdir -p tools/patcher-data
 
-KEYSTORE_PATH="tools/patcher-data/pixelboard.keystore"
+KEYSTORE_PATH="${PIXELBOARD_KEYSTORE_PATH:-tools/patcher-data/pixelboard.keystore}"
+KEYSTORE_PASSWORD="${PIXELBOARD_KEYSTORE_PASSWORD:-pixelboard}"
+KEY_ALIAS="${PIXELBOARD_KEY_ALIAS:-pixelboard}"
+KEY_PASSWORD="${PIXELBOARD_KEY_PASSWORD:-pixelboard}"
 if [[ ! -f "$KEYSTORE_PATH" ]]; then
     echo "🔑 Generating PixelBoard release keystore..."
     keytool -genkeypair \
@@ -117,9 +120,9 @@ fi
     --striplibs=arm64-v8a \
     --signer="PixelBoard" \
     --keystore="$KEYSTORE_PATH" \
-    --keystore-password=pixelboard \
-    --keystore-entry-alias=pixelboard \
-    --keystore-entry-password=pixelboard \
+    --keystore-password="$KEYSTORE_PASSWORD" \
+    --keystore-entry-alias="$KEY_ALIAS" \
+    --keystore-entry-password="$KEY_PASSWORD" \
     --temporary-files-path="tools/patcher-data/tmp" \
     -o=output/PixelBoard.apk \
     -r=output/patching-result.json \

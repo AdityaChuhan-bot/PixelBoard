@@ -5,7 +5,7 @@
 **Supercharged Gboard Mod featuring Google Pixel 11 series's Rambler Voice Typing & AI Writing Assistant [No Root].**
 
 <p>
-  <a href="https://github.com/Akshayykadam/PixelBoard/releases/tag/1.3.5">
+  <a href="https://github.com/AdityaChuhan-bot/PixelBoard/releases/latest">
     <img src="https://img.shields.io/badge/Release-v1.3.5-8A2BE2?style=flat-square&logo=github&logoColor=white" alt="Latest Release"/>
   </a>
   <img src="https://img.shields.io/badge/Android-10%20to%2016-3DDC84?style=flat-square&logo=android&logoColor=white" alt="Android Support"/>
@@ -15,60 +15,44 @@
   <img src="https://img.shields.io/badge/License-GPL--3.0-lightgrey?style=flat-square" alt="License"/>
 </p>
 
-<!-- Primary Action: Direct Download Links -->
+<!-- Primary Action: Fork release downloads -->
 <p>
-  <a href="https://github.com/Akshayykadam/PixelBoard/releases/download/1.3.5/PixelBoard-1.3.5.apk">
-    <img src="https://img.shields.io/badge/📥_Direct_Download_(APK)-v1.3.5_(122_MB)-00C853?style=for-the-badge&logo=android&logoColor=white" height="42" alt="Download Ready-to-Install APK"/>
+  <a href="https://github.com/AdityaChuhan-bot/PixelBoard/releases/latest/download/PixelBoard.apk">
+    <img src="https://img.shields.io/badge/📥_Latest_APK-See_Releases-00C853?style=for-the-badge&logo=android&logoColor=white" height="42" alt="Download PixelBoard APK from this repository's latest release"/>
   </a>
   &nbsp;&nbsp;
-  <a href="https://github.com/Akshayykadam/PixelBoard/releases/download/1.3.5/patches-1.3.5.mpp">
-    <img src="https://img.shields.io/badge/📦_Morphe_Patch_(.mpp)-v1.3.5_(1.7_MB)-2979FF?style=for-the-badge&logo=android&logoColor=white" height="42" alt="Download Morphe Patch Bundle"/>
+  <a href="https://github.com/AdityaChuhan-bot/PixelBoard/releases/latest/download/PixelBoard.mpp">
+    <img src="https://img.shields.io/badge/📦_Patch_Bundle-Download_MPP-2979FF?style=for-the-badge&logo=android&logoColor=white" height="42" alt="Download PixelBoard patch bundle"/>
   </a>
 </p>
-
+<p><sub>Downloads point to this repository. APK assets will appear only after a build has a compatible Gboard base APK and the configured release-signing key. Until then, use the patch bundle from Releases or build locally.</sub></p>
 <p>
-  <sub><b>Recommended:</b> Download the ready-to-install <b>APK</b> directly (pre-signed, no root needed, installs side-by-side with stock Gboard). Use the <b>Morphe Patch</b> only if patching manually on Gboard <b>v18.6.3.100</b>.</sub>
-</p>
-
-<p>
-  <a href="https://github.com/Akshayykadam/PixelBoard/releases/download/1.3.5/PixelBoard-1.3.5.apk"> <b>⬇️ Direct Download APK (v1.3.5)</b></a> &nbsp;&bull;&nbsp;
-  <a href="https://github.com/Akshayykadam/PixelBoard/releases/latest/download/PixelBoard.apk"> <b>⬇️ Latest APK (Direct)</b></a> &nbsp;&bull;&nbsp;
-  <a href="https://github.com/Akshayykadam/PixelBoard/releases/download/1.3.5/patches-1.3.5.mpp"> <b>📦 Morphe Patch (v18.6.3.100 only)</b></a> &nbsp;&bull;&nbsp;
-  <a href="https://github.com/Akshayykadam/PixelBoard/releases/tag/1.3.5"> <b>Release Notes</b></a> &nbsp;&bull;&nbsp;
-  <a href="#installation-guide"> <b>Installation Guide</b></a> &nbsp;&bull;&nbsp;
-  <a href="https://github.com/Akshayykadam/PixelBoard/releases"> <b>All Releases</b></a>
+  <a href="https://github.com/AdityaChuhan-bot/PixelBoard/releases/latest"><b>Latest Release</b></a> &nbsp;•&nbsp;
+  <a href="#installation-guide"><b>Installation Guide</b></a> &nbsp;•&nbsp;
+  <a href="https://github.com/AdityaChuhan-bot/PixelBoard/releases"><b>All Releases</b></a>
 </p>
 
 </div>
-
 ---
 
 <a id="release-assets"></a>
-## 📥 Release Assets (v1.3.5 / Gboard v18.6.3.100)
+## 📥 Release Assets
 
-| Package | Type | Description |
+All release links below resolve to assets published by **this fork**:
+
+| Asset | Direct link | Availability |
 | :--- | :--- | :--- |
-| [**PixelBoard-1.3.5.apk**](https://github.com/Akshayykadam/PixelBoard/releases/download/1.3.5/PixelBoard-1.3.5.apk) | **Signed APK** *(Recommended)* | **Ready to install.** Pre-built, signed APK with all mods enabled. Installs side-by-side with stock Gboard without root (`com.akshaykadam.pixelboard`). Base Gboard v18.6.3.100 Release. |
-| [**patches-1.3.5.mpp**](https://github.com/Akshayykadam/PixelBoard/releases/download/1.3.5/patches-1.3.5.mpp) | **Morphe Patch Bundle** | Standalone patch bundle for [Morphe Manager](#option-c-patch-via-morphe-manager-on-device-patcher). <br>**⚠️ Note:** This patch **only works on Gboard version 18.6.3.100** (`18.6.3.1002251336-release-arm64-v8a`). Older versions like 18.5 are **not** supported. |
+| Signed APK | [Download PixelBoard.apk](https://github.com/AdityaChuhan-bot/PixelBoard/releases/latest/download/PixelBoard.apk) | Published only when the release pipeline has both a compatible Gboard base APK and the configured signing key |
+| Morphe patch bundle | [Download PixelBoard.mpp](https://github.com/AdityaChuhan-bot/PixelBoard/releases/latest/download/PixelBoard.mpp) | Attached automatically to tagged source releases |
 
-### 🌟 What's New in v1.3.5
+> [!IMPORTANT]
+> This fork does not currently contain a distributable base Gboard APK. The APK link is intentionally not presented as a ready download until a real APK has been built and signed. The source build can still publish the `.mpp` patch bundle.
 
-#### 🎙️ Gemini Rambler Natural Voice Dictation
-- **Screen Rotation Grace Period**: Maintains active Rambler voice dictation across device display orientation changes by introducing a 1.5s grace period during display rotation, preventing sessions from abruptly aborting ([#146](https://github.com/Akshayykadam/PixelBoard/issues/146), PR [#165](https://github.com/Akshayykadam/PixelBoard/pull/165) by Francisco Valentim Castilho).
-- **Preserve Speech Diff for Mid-Sentence Voice Edits**: Retains speech diffs for voice replacements and mid-sentence voice commands (such as *"replace X with Y"*), word edits in respoken phrases, and mid-sentence cursor placements without overwriting surrounding compositions ([#167](https://github.com/Akshayykadam/PixelBoard/issues/167)).
-- **Strict Language Enforcement & Anti-Drift**: Disabled proactive parallel ASR and seamless fallback in Rambler stock policy to prevent voice dictation from unintentionally switching languages or drifting to similar locales (e.g., Czech &rarr; Slovak) ([#154](https://github.com/Akshayykadam/PixelBoard/issues/154)).
-- **Eliminate Text Duplication on Dictation Start**: Fixed an issue where starting dictation in an editor containing pre-existing text or recently pasted clipboard items would duplicate text at the cursor ([#166](https://github.com/Akshayykadam/PixelBoard/issues/166)).
-- **Native Split Readiness Gate Check for Gboard 18.6.3**: Added native library readiness gate verification on split components for Gboard 18.6.3 (`Lsmi;`, `Locf;`), ensuring smooth and stable JNI initialization on fused and split APKs ([#168](https://github.com/Akshayykadam/PixelBoard/issues/168)).
+### Liquid Glass keyboard — implementation status
 
-#### 🤖 AI Writing Assistant
-- **Server Connectivity & Timeout Repair**: Repaired request timeout and prompt template evaluation in `GboardAiWritingToolsRuntime`, eliminating *"cannot connect to server"* errors and restoring reliable Rephrase, Proofreading, and Tone adjustments (*Professional*, *Casual*, *Concise*, *Emotive*) via Google's Gboard server backend.
-- **Direct Boot & Secure Storage Safety**: Added user unlock state checks (`UserManager.isUserUnlocked`) to avoid premature preference reads or crashes during direct boot before initial device unlock.
+Liquid Glass is the next UI feature target. The current patch source only sanitizes key labels and toggles Gboard's native Material 3 rounded-key flags; it does **not** yet replace Gboard's key, keyboard-background, or suggestion-strip renderers with glass surfaces. A genuine implementation requires a compatible base APK to inspect and validate the exact renderer classes and resource IDs. No visual feature is claimed until those hooks are implemented and tested.
 
-#### 📦 Packaging, Platform & Quality of Life
-- **Morphe Manager Patch Bundle DEX Packaging**: Included `classes.dex` directly in the root of the `.mpp` patch bundle via `:patches:buildAndroid` so Morphe Manager detects and loads all 4 patches out-of-the-box (resolving "0 patches found").
-- **Android 10+ (API 29) Minimum SDK Compatibility**: Clamped `minSdkVersion` in the package manifest to API 29, enabling full installation and coexistence on Android 10 and Android 11 devices without package parser errors.
-- **Refined Softkey Label Sanitizer**: Cleaned up the symbol key label patch to focus strictly on `AutoCenterScaleTextView` keycap rendering, removing unnecessary input connection hooks to prevent text insertion side-effects.
-- **Base App Compatibility**: Full support and verification for Gboard v18.6.3.100 Release (`18.6.3.1002251336-release-arm64-v8a`).
+Target design: translucent dark/light keyboard surface, restrained blur with a low-cost fallback, subtle reflective key edges, a floating suggestion surface, and lightweight press feedback. Existing input dispatch, touch geometry, accessibility, voice typing, clipboard, OCR, and writing tools must remain unchanged.
 
 ---
 
@@ -169,7 +153,7 @@ PixelBoard features a clean, minimal preference screen modeled directly after th
 ## Installation Guide
 
 ### Option A: Direct Download on Your Phone (Easiest)
-1. Download [**PixelBoard Stable APK (v1.3.5, 122 MB)**](https://github.com/Akshayykadam/PixelBoard/releases/download/1.3.5/PixelBoard-1.3.5.apk) (or view the [**v1.3.5 Release Page**](https://github.com/Akshayykadam/PixelBoard/releases/tag/1.3.5)).
+1. Download the [**latest PixelBoard APK**](https://github.com/AdityaChuhan-bot/PixelBoard/releases/latest/download/PixelBoard.apk) if an APK asset is available in Releases. Otherwise, wait for a verified APK release; do not install a binary from another repository as if it were built from this fork.
 2. Tap the downloaded `.apk` in your notification drawer or Downloads folder.
 3. If prompted, toggle **"Allow from this source"** and tap **Install**.
 4. Enable PixelBoard in **Settings > System > Languages & input > On-screen keyboard**.
@@ -186,7 +170,7 @@ adb shell am force-stop com.akshaykadam.pixelboard
 You can patch your stock Gboard APK directly on your phone using **Morphe Manager**:
 1. Install **Morphe Manager** on your Android device.
 2. Get the two required files:
-   - **Patch Bundle**: [**PixelBoard.mpp**](https://github.com/Akshayykadam/PixelBoard/raw/main/patches/PixelBoard.mpp) (or versioned [**patches-1.3.5.mpp**](https://github.com/Akshayykadam/PixelBoard/releases/download/1.3.5/patches-1.3.5.mpp))
+   - **Patch Bundle**: [**PixelBoard.mpp**](https://github.com/AdityaChuhan-bot/PixelBoard/releases/latest/download/PixelBoard.mpp) (or versioned [**patches-1.3.5.mpp**](https://github.com/AdityaChuhan-bot/PixelBoard/releases/latest/download/PixelBoard.mpp))
    - **Stock Base APK**: Download the official base bundle from [**APKMirror (Gboard v18.6.3.100 Release)**](https://www.apkmirror.com/apk/google-inc/gboard/gboard-the-google-keyboard-18-6-3-1002251336-release/).
 3. In Morphe Manager, select **Storage**, choose the stock Gboard APK, and load `PixelBoard.mpp` as the patch source.
 4. Tap **Patch** and then **Install**!
@@ -197,7 +181,7 @@ You can patch your stock Gboard APK directly on your phone using **Morphe Manage
 > [!TIP]
 > You can also add PixelBoard as a custom auto-updating patch source in Morphe Manager by adding:
 > ```text
-> https://raw.githubusercontent.com/Akshayykadam/PixelBoard/main/patches-bundle.json
+> https://raw.githubusercontent.com/AdityaChuhan-bot/PixelBoard/main/patches-bundle.json
 > ```
 
 ---
@@ -242,7 +226,7 @@ GBoardMod/
 | **Root Required** | **No** (Standalone side-by-side coexistence) |
 
 > [!CAUTION]
-> **Gboard Version Dependency**: The patch bundle is engineered specifically for **Gboard v18.6.3.100**. Patching Gboard 18.5 or older will cause flag evaluation hooks (`Lodf.g`) and resource bindings to miss, leaving all mods inactive. Always ensure you are patching stock Gboard `18.6.3.1002251336-release-arm64-v8a` or directly download the pre-patched, ready-to-use [**PixelBoard-1.3.5.apk**](https://github.com/Akshayykadam/PixelBoard/releases/download/1.3.5/PixelBoard-1.3.5.apk).
+> **Gboard Version Dependency**: The patch bundle is engineered specifically for **Gboard v18.6.3.100**. Patching Gboard 18.5 or older will cause flag evaluation hooks (`Lodf.g`) and resource bindings to miss, leaving all mods inactive. Always ensure you are patching stock Gboard `18.6.3.1002251336-release-arm64-v8a` or directly download the pre-patched, ready-to-use [**PixelBoard-1.3.5.apk**](https://github.com/AdityaChuhan-bot/PixelBoard/releases/latest/download/PixelBoard.apk).
 
 > [!NOTE]
 > **Google Pixel Device Support**: Advanced on-device inference (**Private AICore / Astrea**) is available **only on Google Pixel devices**. Core **Rambler Natural Voice Typing**, **AI Writing Assistant**, proofreading, and tone rewrite work across all Android devices.
