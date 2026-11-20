@@ -18,16 +18,16 @@ Preserve Gboard's existing input connection, key hitboxes, gesture typing, langu
 
 ## Repository audit
 
-The current extension hook `GboardKeyboardRuntime.sanitizeKeyLabel` is injected into `AutoCenterScaleTextView.setText`. It changes label text only. `GboardRoundedKeysSettings` toggles Gboard's built-in Belka/Material 3 rounded-key flags. Neither hook owns the keyboard background, individual key drawable creation, or suggestion-strip surface rendering.
+The uploaded PixelBoard 1.3.5 APK contains Gboard 18.6.3.100 and exposes `SoftKeyboardView.onLayout(ZIIII)V` plus the `SoftKeyView` view hierarchy. A new bytecode patch injects `GboardLiquidGlassRuntime.applyToKeyboard(ViewGroup)` at the beginning of that existing layout method. The runtime styles the keyboard root and actual `SoftKeyView` instances using theme-aware translucent gradients, reflective strokes, and native ripple feedback. It caches applied drawables to avoid allocating a new background on every layout pass.
 
-The current repository also does not contain the base Gboard APK used by `build.sh`. The patch bundle is version-specific, so renderer class names, method signatures, resource IDs, and layout behavior cannot be safely inferred from a different Gboard build.
+The runtime intentionally does not apply `RenderEffect` to the key views: that would blur key labels as well as the background. Android does not expose a general-purpose backdrop blur for arbitrary child views, so this is a frosted-glass approximation. Suggestion-strip styling remains out of scope for this first renderer pass. The uploaded APK is already a patched PixelBoard build, not a stock Gboard base, and cannot automatically be treated as a clean input to the existing full patch pipeline.
 
 ## Implementation gate
 
-Do not add speculative hooks or claim the Liquid Glass feature is complete until a compatible base APK is available for bytecode/resource inspection and the resulting patch passes:
+Do not claim the Liquid Glass feature is complete until the new hook passes source-level and patch-application checks, and the resulting APK passes:
 
-1. Source-level patch contract tests.
-2. Patch application against the exact supported Gboard version.
+1. Source-level patch contract tests and CI build.
+2. Patch application against Gboard 18.6.3.100.
 3. APK resource and DEX verification.
 4. Install/launch and keyboard smoke tests on Android 16.
 5. Typing latency, touch geometry, rotation, and accessibility regression checks.
