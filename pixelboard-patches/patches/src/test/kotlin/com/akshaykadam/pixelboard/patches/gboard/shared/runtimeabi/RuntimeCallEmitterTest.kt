@@ -19,6 +19,19 @@ class RuntimeCallEmitterTest {
     }
 
     @Test
+    fun `emits the Liquid Glass hook with the keyboard root receiver`() {
+        assertEquals(
+            "invoke-static {p0}, " +
+                "Lcom/akshaykadam/pixelboard/extension/keyboard/" +
+                "GboardLiquidGlassRuntime;->applyToKeyboard(Landroid/view/ViewGroup;)V",
+            RuntimeCallEmitter.invoke(
+                RuntimeCallId.KEYBOARD_RUNTIME_APPLY_LIQUID_GLASS,
+                registers = "p0",
+            ),
+        )
+    }
+
+    @Test
     fun `emits a static range invocation without exposing an opcode string`() {
         assertEquals(
             "invoke-static/range {v4 .. v4}, " +
