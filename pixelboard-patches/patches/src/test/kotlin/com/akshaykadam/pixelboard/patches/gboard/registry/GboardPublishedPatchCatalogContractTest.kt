@@ -46,6 +46,10 @@ class GboardPublishedPatchCatalogContractTest {
 
         assertEquals("Liquid Glass Keyboard", patch.name)
         assertTrue(patch.default)
+        assertEquals(
+            setOf("liquid_glass_keyboard.surfaces"),
+            GboardTargetAdmission.admittedContributions("liquid_glass_keyboard"),
+        )
         assertEquals(2, patch.dependencies.size)
         assertEquals(
             setOf(gboardLiquidGlassKeyboardPatch, gboardLiquidGlassSuggestionStripPatch),
