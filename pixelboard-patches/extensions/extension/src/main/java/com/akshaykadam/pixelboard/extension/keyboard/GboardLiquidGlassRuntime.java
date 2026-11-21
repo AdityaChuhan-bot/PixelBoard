@@ -95,7 +95,12 @@ public final class GboardLiquidGlassRuntime {
             return;
         }
 
-        Drawable original = view.getBackground();
+        // Rebuild from the first unmodified drawable when the system theme
+        // changes. Otherwise each onLayout would stack another glass layer.
+        Drawable current = view.getBackground();
+        Drawable original = previous != null && previous.drawable == current
+                ? previous.original
+                : current;
         Drawable glass = createSurface(view, dark, action);
         LayerDrawable composed = original == null
                 ? new LayerDrawable(new Drawable[] { glass })
@@ -108,7 +113,7 @@ public final class GboardLiquidGlassRuntime {
         // setBackground() may adopt drawable padding. Keep Gboard's measured
         // content insets and key geometry exactly as they were before styling.
         view.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
-        APPLIED.put(view, new AppliedSurface(composed, dark, action));
+        APPLIED.put(view, new AppliedSurface(original, composed, dark, action));
     }
 
     private static Drawable createSurface(View view, boolean dark, boolean action) {
@@ -152,11 +157,13 @@ public final class GboardLiquidGlassRuntime {
     }
 
     private static final class AppliedSurface {
+        final Drawable original;
         final Drawable drawable;
         final boolean dark;
         final boolean action;
 
-        AppliedSurface(Drawable drawable, boolean dark, boolean action) {
+        AppliedSurface(Drawable original, Drawable drawable, boolean dark, boolean action) {
+            this.original = original;
             this.drawable = drawable;
             this.dark = dark;
             this.action = action;
