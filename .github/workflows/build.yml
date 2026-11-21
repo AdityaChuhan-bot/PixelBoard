@@ -64,22 +64,25 @@ jobs:
           if-no-files-found: error
           retention-days: 30
 
-      - name: Check APK release configuration
-        if: startsWith(github.ref, 'refs/tags/')
+      - name: Check APK build configuration
+        if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/')
         id: apk_config
         env:
           BASE_APK_URL: ${{ secrets.GBOARD_APK_URL }}
           KEYSTORE_B64: ${{ secrets.PIXELBOARD_KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.PIXELBOARD_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.PIXELBOARD_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.PIXELBOARD_KEY_PASSWORD }}
         run: |
-          if [[ -n "$BASE_APK_URL" && -n "$KEYSTORE_B64" && -n "${{ secrets.PIXELBOARD_KEYSTORE_PASSWORD }}" && -n "${{ secrets.PIXELBOARD_KEY_ALIAS }}" && -n "${{ secrets.PIXELBOARD_KEY_PASSWORD }}" ]]; then
+          if [[ -n "$BASE_APK_URL" && -n "$KEYSTORE_B64" && -n "$KEYSTORE_PASSWORD" && -n "$KEY_ALIAS" && -n "$KEY_PASSWORD" ]]; then
             echo "ready=true" >> "$GITHUB_OUTPUT"
           else
             echo "ready=false" >> "$GITHUB_OUTPUT"
-            echo "::notice::APK build skipped. Configure GBOARD_APK_URL and PIXELBOARD_KEYSTORE_BASE64 plus signing password/alias secrets to publish an APK."
+            echo "::notice::APK build skipped. Configure GBOARD_APK_URL, PIXELBOARD_KEYSTORE_BASE64, PIXELBOARD_KEYSTORE_PASSWORD, PIXELBOARD_KEY_ALIAS, and PIXELBOARD_KEY_PASSWORD secrets."
           fi
 
       - name: Build signed APK
-        if: startsWith(github.ref, 'refs/tags/') && steps.apk_config.outputs.ready == 'true'
+        if: steps.apk_config.outputs.ready == 'true'
         env:
           BASE_APK_URL: ${{ secrets.GBOARD_APK_URL }}
           KEYSTORE_B64: ${{ secrets.PIXELBOARD_KEYSTORE_BASE64 }}
