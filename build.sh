@@ -97,19 +97,25 @@ mkdir -p output
 mkdir -p tools/patcher-data
 
 KEYSTORE_PATH="${PIXELBOARD_KEYSTORE_PATH:-tools/patcher-data/pixelboard.keystore}"
-KEYSTORE_PASSWORD="${PIXELBOARD_KEYSTORE_PASSWORD:-pixelboard}"
-KEY_ALIAS="${PIXELBOARD_KEY_ALIAS:-pixelboard}"
-KEY_PASSWORD="${PIXELBOARD_KEY_PASSWORD:-pixelboard}"
+KEYSTORE_PASSWORD="${PIXELBOARD_KEYSTORE_PASSWORD:-}"
+KEY_ALIAS="${PIXELBOARD_KEY_ALIAS:-}"
+KEY_PASSWORD="${PIXELBOARD_KEY_PASSWORD:-}"
+
+if [[ -z "$KEYSTORE_PASSWORD" || -z "$KEY_ALIAS" || -z "$KEY_PASSWORD" ]]; then
+    echo "❌ Signing credentials are required. Set PIXELBOARD_KEYSTORE_PASSWORD, PIXELBOARD_KEY_ALIAS, and PIXELBOARD_KEY_PASSWORD."
+    exit 1
+fi
+
 if [[ ! -f "$KEYSTORE_PATH" ]]; then
-    echo "🔑 Generating PixelBoard release keystore..."
+    echo "🔑 Generating PixelBoard signing keystore..."
     keytool -genkeypair \
         -keystore "$KEYSTORE_PATH" \
-        -alias pixelboard \
+        -alias "$KEY_ALIAS" \
         -keyalg RSA \
         -keysize 2048 \
         -validity 10000 \
-        -storepass pixelboard \
-        -keypass pixelboard \
+        -storepass "$KEYSTORE_PASSWORD" \
+        -keypass "$KEY_PASSWORD" \
         -dname "CN=PixelBoard, OU=PixelBoard, O=PixelBoard, L=Unknown, ST=Unknown, C=US" \
         >/dev/null 2>&1
 fi
