@@ -38,15 +38,23 @@ public final class GboardLiquidGlassRuntime {
             return;
         }
         boolean dark = isDarkMode(keyboardRoot);
-        applySurface(keyboardRoot, dark, false);
+        applySurface(keyboardRoot, dark, false, false);
         applyDescendants(keyboardRoot, dark);
+    }
+
+    /** Styles Gboard's existing Latin candidate/suggestion strip container. */
+    public static void applyToSuggestionStrip(ViewGroup suggestionStrip) {
+        if (suggestionStrip == null) {
+            return;
+        }
+        applySurface(suggestionStrip, isDarkMode(suggestionStrip), false, true);
     }
 
     private static void applyDescendants(ViewGroup parent, boolean dark) {
         for (int index = 0; index < parent.getChildCount(); index++) {
             View child = parent.getChildAt(index);
             if (isSoftKeyView(child)) {
-                applySurface(child, dark, isActionKey(child));
+                applySurface(child, dark, isActionKey(child), false);
             }
             if (child instanceof ViewGroup) {
                 applyDescendants((ViewGroup) child, dark);
@@ -86,12 +94,13 @@ public final class GboardLiquidGlassRuntime {
         return mode == Configuration.UI_MODE_NIGHT_YES;
     }
 
-    private static void applySurface(View view, boolean dark, boolean action) {
+    private static void applySurface(View view, boolean dark, boolean action, boolean strip) {
         AppliedSurface previous = APPLIED.get(view);
         if (previous != null
                 && previous.drawable == view.getBackground()
                 && previous.dark == dark
-                && previous.action == action) {
+                && previous.action == action
+                && previous.strip == strip) {
             return;
         }
 
@@ -101,7 +110,7 @@ public final class GboardLiquidGlassRuntime {
         Drawable original = previous != null && previous.drawable == current
                 ? previous.original
                 : current;
-        Drawable glass = createSurface(view, dark, action);
+        Drawable glass = createSurface(view, dark, action, strip);
         LayerDrawable composed = original == null
                 ? new LayerDrawable(new Drawable[] { glass })
                 : new LayerDrawable(new Drawable[] { original, glass });
@@ -113,15 +122,22 @@ public final class GboardLiquidGlassRuntime {
         // setBackground() may adopt drawable padding. Keep Gboard's measured
         // content insets and key geometry exactly as they were before styling.
         view.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
-        APPLIED.put(view, new AppliedSurface(original, composed, dark, action));
+        APPLIED.put(view, new AppliedSurface(original, composed, dark, action, strip));
     }
 
-    private static Drawable createSurface(View view, boolean dark, boolean action) {
+    private static Drawable createSurface(View view, boolean dark, boolean action, boolean strip) {
         int[] colors;
         int stroke;
         int ripple;
         float radius;
-        if (dark) {
+        if (strip) {
+            colors = dark
+                    ? new int[] { 0x443B4658, 0x30303A49, 0x3A47566B }
+                    : new int[] { 0xDDEAF1FA, 0xD1DDE8F4, 0xE6F5F8FC };
+            stroke = dark ? 0x668EAACB : 0x8895AFCB;
+            ripple = dark ? 0x44FFFFFF : 0x334A78B8;
+            radius = 16f;
+        } else if (dark) {
             colors = action
                     ? new int[] { 0x665E9FE8, 0x3B3D75B7, 0x454D83C2 }
                     : new int[] { 0x48FFFFFF, 0x22FFFFFF, 0x30DCE8F5 };
@@ -161,12 +177,14 @@ public final class GboardLiquidGlassRuntime {
         final Drawable drawable;
         final boolean dark;
         final boolean action;
+        final boolean strip;
 
-        AppliedSurface(Drawable original, Drawable drawable, boolean dark, boolean action) {
+        AppliedSurface(Drawable original, Drawable drawable, boolean dark, boolean action, boolean strip) {
             this.original = original;
             this.drawable = drawable;
             this.dark = dark;
             this.action = action;
+            this.strip = strip;
         }
     }
 }

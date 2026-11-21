@@ -69,6 +69,18 @@ public class GboardLiquidGlassRuntimeTest {
     }
 
     @Test
+    public void suggestionStripGetsItsOwnGlassSurface() {
+        FrameLayout strip = new FrameLayout(RuntimeEnvironment.getApplication());
+
+        GboardLiquidGlassRuntime.applyToSuggestionStrip(strip);
+
+        Assert.assertTrue(strip.getBackground() instanceof LayerDrawable);
+        LayerDrawable layers = (LayerDrawable) strip.getBackground();
+        Assert.assertEquals(1, layers.getNumberOfLayers());
+        Assert.assertTrue(layers.getDrawable(0) instanceof RippleDrawable);
+    }
+
+    @Test
     public void nullKeyboardRootIsIgnored() {
         GboardLiquidGlassRuntime.applyToKeyboard(null);
     }
