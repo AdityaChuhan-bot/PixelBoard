@@ -100,7 +100,14 @@ public final class GboardLiquidGlassRuntime {
         LayerDrawable composed = original == null
                 ? new LayerDrawable(new Drawable[] { glass })
                 : new LayerDrawable(new Drawable[] { original, glass });
+        int paddingLeft = view.getPaddingLeft();
+        int paddingTop = view.getPaddingTop();
+        int paddingRight = view.getPaddingRight();
+        int paddingBottom = view.getPaddingBottom();
         view.setBackground(composed);
+        // setBackground() may adopt drawable padding. Keep Gboard's measured
+        // content insets and key geometry exactly as they were before styling.
+        view.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
         APPLIED.put(view, new AppliedSurface(composed, dark, action));
     }
 

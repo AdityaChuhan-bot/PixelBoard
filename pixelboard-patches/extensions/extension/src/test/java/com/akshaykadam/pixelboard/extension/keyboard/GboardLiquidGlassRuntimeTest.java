@@ -56,6 +56,19 @@ public class GboardLiquidGlassRuntimeTest {
     }
 
     @Test
+    public void applyingGlassPreservesKeyboardPadding() {
+        FrameLayout root = new FrameLayout(RuntimeEnvironment.getApplication());
+        root.setPadding(7, 11, 13, 17);
+
+        GboardLiquidGlassRuntime.applyToKeyboard(root);
+
+        Assert.assertEquals(7, root.getPaddingLeft());
+        Assert.assertEquals(11, root.getPaddingTop());
+        Assert.assertEquals(13, root.getPaddingRight());
+        Assert.assertEquals(17, root.getPaddingBottom());
+    }
+
+    @Test
     public void nullKeyboardRootIsIgnored() {
         GboardLiquidGlassRuntime.applyToKeyboard(null);
     }
