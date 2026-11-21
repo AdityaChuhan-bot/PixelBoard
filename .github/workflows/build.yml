@@ -1,5 +1,9 @@
 name: Build, Test & Publish PixelBoard
 
+concurrency:
+  group: pixelboard-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
   push:
     branches: [ main ]
