@@ -38,7 +38,7 @@ jobs:
 
       - name: Run patch tests
         working-directory: pixelboard-patches
-        run: ./gradlew test --no-daemon
+        run: ./gradlew :patches:test --no-daemon
 
       - name: Build Android patch bundle
         working-directory: pixelboard-patches
@@ -47,7 +47,13 @@ jobs:
       - name: Stage stable patch bundle
         run: |
           mkdir -p release-assets
-          cp pixelboard-patches/patches/build/libs/*.mpp release-assets/PixelBoard.mpp
+          MPP_FILE="$(find pixelboard-patches/patches/build/libs -maxdepth 1 -type f -name '*.mpp' ! -name '*sources*' ! -name '*javadoc*' | head -n 1)"
+          test -n "$MPP_FILE"
+          cp "$MPP_FILE" release-assets/PixelBoard.mpp
+          # build.sh consumes this repository-root bundle; ensure tag APK builds
+          # apply the exact bundle compiled by this workflow, not a stale copy.
+          mkdir -p patches
+          cp "$MPP_FILE" patches/PixelBoard.mpp
 
       - name: Upload CI artifact
         if: github.event_name != 'push' || !startsWith(github.ref, 'refs/tags/')
@@ -65,7 +71,7 @@ jobs:
           BASE_APK_URL: ${{ secrets.GBOARD_APK_URL }}
           KEYSTORE_B64: ${{ secrets.PIXELBOARD_KEYSTORE_BASE64 }}
         run: |
-          if [[ -n "$BASE_APK_URL" && -n "$KEYSTORE_B64" ]]; then
+          if [[ -n "$BASE_APK_URL" && -n "$KEYSTORE_B64" && -n "${{ secrets.PIXELBOARD_KEYSTORE_PASSWORD }}" && -n "${{ secrets.PIXELBOARD_KEY_ALIAS }}" && -n "${{ secrets.PIXELBOARD_KEY_PASSWORD }}" ]]; then
             echo "ready=true" >> "$GITHUB_OUTPUT"
           else
             echo "ready=false" >> "$GITHUB_OUTPUT"
@@ -97,6 +103,4 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           generate_release_notes: true
-          files: |
-            release-assets/PixelBoard.mpp
-            release-assets/PixelBoard.apk
+          files: release-assets/*
