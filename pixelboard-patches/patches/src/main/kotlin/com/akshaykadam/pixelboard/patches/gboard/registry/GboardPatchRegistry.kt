@@ -19,6 +19,8 @@ import com.akshaykadam.pixelboard.patches.gboard.features.packagerename.applyGbo
 import com.akshaykadam.pixelboard.patches.gboard.features.packagerename.gboardPackageRenameResourcePatch
 import com.akshaykadam.pixelboard.patches.gboard.features.packagerename.isValidGboardAppDisplayName
 import com.akshaykadam.pixelboard.patches.gboard.features.signaturebypass.gboardSignatureBypassBytecodePatch
+import com.akshaykadam.pixelboard.patches.gboard.features.keyboard.gboardLiquidGlassKeyboardPatch
+import com.akshaykadam.pixelboard.patches.gboard.features.keyboard.gboardLiquidGlassSuggestionStripPatch
 import com.akshaykadam.pixelboard.patches.gboard.features.writingtools.gboardAiWritingToolsFeatureMarkerPatch
 import com.akshaykadam.pixelboard.patches.gboard.features.writingtools.gboardAiWritingTools1803AutoFixAcceptancePatch
 import com.akshaykadam.pixelboard.patches.gboard.features.writingtools.gboardAiWritingTools1803AutoFixRoutePatch
@@ -136,12 +138,26 @@ val gboardPackageRenamePatch = gboardPublicResourcePatch(
     }
 }
 
+val gboardLiquidGlassFeaturePatch = resourcePatch(
+    name = "Liquid Glass Keyboard",
+    description = "Apply translucent glass styling to Gboard keys and the suggestion strip.",
+    default = true,
+) {
+    compatibleWith(COMPATIBILITY_GBOARD)
+
+    dependsOn(
+        gboardLiquidGlassKeyboardPatch,
+        gboardLiquidGlassSuggestionStripPatch,
+    )
+}
+
 object GboardPublishedPatchCatalog {
     val publishedRegistrations: Set<Patch<*>> = linkedSetOf(
         gboardAdvancedVoiceTypingPatch,
         gboardAiWritingToolsPatch,
         gboardSignatureBypassPatch,
         gboardPackageRenamePatch,
+        gboardLiquidGlassFeaturePatch,
     ).filterTo(linkedSetOf()) { patch -> patch.name != null }
 
     @Suppress("DEPRECATION")
