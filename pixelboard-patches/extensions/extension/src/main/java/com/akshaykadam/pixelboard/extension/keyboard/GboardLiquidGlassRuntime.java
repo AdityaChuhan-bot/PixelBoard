@@ -10,6 +10,7 @@ import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.lang.ref.WeakReference;
 import java.util.Collections;
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -97,7 +98,7 @@ public final class GboardLiquidGlassRuntime {
     private static void applySurface(View view, boolean dark, boolean action, boolean strip) {
         AppliedSurface previous = APPLIED.get(view);
         if (previous != null
-                && previous.drawable == view.getBackground()
+                && previous.drawable.get() == view.getBackground()
                 && previous.dark == dark
                 && previous.action == action
                 && previous.strip == strip) {
@@ -107,8 +108,8 @@ public final class GboardLiquidGlassRuntime {
         // Rebuild from the first unmodified drawable when the system theme
         // changes. Otherwise each onLayout would stack another glass layer.
         Drawable current = view.getBackground();
-        Drawable original = previous != null && previous.drawable == current
-                ? previous.original
+        Drawable original = previous != null && previous.drawable.get() == current
+                ? previous.original.get()
                 : current;
         Drawable glass = createSurface(view, dark, action, strip);
         LayerDrawable composed = original == null
@@ -173,15 +174,15 @@ public final class GboardLiquidGlassRuntime {
     }
 
     private static final class AppliedSurface {
-        final Drawable original;
-        final Drawable drawable;
+        final WeakReference<Drawable> original;
+        final WeakReference<Drawable> drawable;
         final boolean dark;
         final boolean action;
         final boolean strip;
 
         AppliedSurface(Drawable original, Drawable drawable, boolean dark, boolean action, boolean strip) {
-            this.original = original;
-            this.drawable = drawable;
+            this.original = new WeakReference<>(original);
+            this.drawable = new WeakReference<>(drawable);
             this.dark = dark;
             this.action = action;
             this.strip = strip;
