@@ -32,6 +32,19 @@ class RuntimeCallEmitterTest {
     }
 
     @Test
+    fun `emits the Liquid Glass suggestion-strip hook with its container receiver`() {
+        assertEquals(
+            "invoke-static {p0}, " +
+                "Lcom/akshaykadam/pixelboard/extension/keyboard/" +
+                "GboardLiquidGlassRuntime;->applyToSuggestionStrip(Landroid/view/ViewGroup;)V",
+            RuntimeCallEmitter.invoke(
+                RuntimeCallId.KEYBOARD_RUNTIME_APPLY_SUGGESTION_STRIP,
+                registers = "p0",
+            ),
+        )
+    }
+
+    @Test
     fun `emits a static range invocation without exposing an opcode string`() {
         assertEquals(
             "invoke-static/range {v4 .. v4}, " +
