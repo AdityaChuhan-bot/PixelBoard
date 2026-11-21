@@ -4,6 +4,7 @@ import com.akshaykadam.pixelboard.patches.gboard.shared.GboardMethodTarget
 import com.akshaykadam.pixelboard.patches.gboard.shared.findMutableMethodOrNull
 import com.akshaykadam.pixelboard.patches.gboard.shared.gboardPatchesExtensionCarrierPatch
 import com.akshaykadam.pixelboard.patches.gboard.shared.isMethodReference
+import com.akshaykadam.pixelboard.patches.gboard.shared.returnInstructionIndices
 import com.akshaykadam.pixelboard.patches.gboard.shared.runtimeabi.RuntimeAbiCatalog
 import com.akshaykadam.pixelboard.patches.gboard.shared.runtimeabi.RuntimeCallEmitter
 import com.akshaykadam.pixelboard.patches.gboard.shared.runtimeabi.RuntimeCallId
@@ -34,12 +35,13 @@ internal val gboardLiquidGlassKeyboardPatch = bytecodePatch(
         if (implementation.instructions.none {
                 it.isMethodReference(RuntimeAbiCatalog.abi(call).reference)
             }) {
-            // p0 is the existing SoftKeyboardView root. The hook changes only
-            // backgrounds; it does not replace child views or intercept input.
-            method.addInstructions(
-                0,
-                RuntimeCallEmitter.invoke(call, "p0"),
-            )
+            // Run after Gboard finishes laying out its children so all key views
+            // exist and their final bounds are already established.
+            val returnIndices = method.returnInstructionIndices()
+            check(returnIndices.isNotEmpty()) { "SoftKeyboardView.onLayout has no return instruction" }
+            returnIndices.asReversed().forEach { index ->
+                method.addInstructions(index, RuntimeCallEmitter.invoke(call, "p0"))
+            }
         }
     }
 }

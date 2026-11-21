@@ -4,6 +4,7 @@ import com.akshaykadam.pixelboard.patches.gboard.shared.GboardMethodTarget
 import com.akshaykadam.pixelboard.patches.gboard.shared.findMutableMethodOrNull
 import com.akshaykadam.pixelboard.patches.gboard.shared.gboardPatchesExtensionCarrierPatch
 import com.akshaykadam.pixelboard.patches.gboard.shared.isMethodReference
+import com.akshaykadam.pixelboard.patches.gboard.shared.returnInstructionIndices
 import com.akshaykadam.pixelboard.patches.gboard.shared.runtimeabi.RuntimeAbiCatalog
 import com.akshaykadam.pixelboard.patches.gboard.shared.runtimeabi.RuntimeCallEmitter
 import com.akshaykadam.pixelboard.patches.gboard.shared.runtimeabi.RuntimeCallId
@@ -34,11 +35,13 @@ internal val gboardLiquidGlassSuggestionStripPatch = bytecodePatch(
         if (implementation.instructions.none {
                 it.isMethodReference(RuntimeAbiCatalog.abi(call).reference)
             }) {
-            // p0 is the existing LinearLayout suggestion-strip container.
-            method.addInstructions(
-                0,
-                RuntimeCallEmitter.invoke(call, "p0"),
-            )
+            // Apply after Gboard's own size-change work so it cannot overwrite
+            // the glass surface later in the same callback.
+            val returnIndices = method.returnInstructionIndices()
+            check(returnIndices.isNotEmpty()) { "LatinFixedCountCandidatesHolderView.onSizeChanged has no return instruction" }
+            returnIndices.asReversed().forEach { index ->
+                method.addInstructions(index, RuntimeCallEmitter.invoke(call, "p0"))
+            }
         }
     }
 }
