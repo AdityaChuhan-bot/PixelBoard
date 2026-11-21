@@ -24,3 +24,6 @@ input/splits*/
 
 # Scratch directory
 scratch/
+# Signing credentials and local Morphe keystores
+tools/morphe-data/*.keystore
+tools/patcher-data/*.keystore
