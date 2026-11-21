@@ -6,7 +6,7 @@
 
 <p>
   <a href="https://github.com/AdityaChuhan-bot/PixelBoard/releases/latest">
-    <img src="https://img.shields.io/badge/Release-v1.3.5-8A2BE2?style=flat-square&logo=github&logoColor=white" alt="Latest Release"/>
+    <img src="https://img.shields.io/badge/Build-Experimental-8A2BE2?style=flat-square&logo=github&logoColor=white" alt="Experimental source build"/>
   </a>
   <img src="https://img.shields.io/badge/Android-10%20to%2016-3DDC84?style=flat-square&logo=android&logoColor=white" alt="Android Support"/>
   <img src="https://img.shields.io/badge/Architecture-arm64--v8a-blue?style=flat-square" alt="Arch Support"/>
@@ -50,9 +50,9 @@ All release links below resolve to assets published by **this fork**:
 
 ### Liquid Glass keyboard — implementation status
 
-**Experimental renderer hook added; device validation pending.** The uploaded PixelBoard 1.3.5 APK was inspected and confirmed to contain Gboard 18.6.3.100's `SoftKeyboardView.onLayout` and `SoftKeyView` classes. The patch now hooks the existing keyboard layout pass and applies theme-aware translucent gradient surfaces, reflective strokes, rounded keycaps, and native ripple feedback to the existing key views. It does not replace the input engine, key views, touch listeners, or hitboxes.
+**Experimental renderer hook added; build and device validation pending.** The uploaded PixelBoard 1.3.5 APK was inspected and confirmed to contain Gboard 18.6.3.100's `SoftKeyboardView.onLayout` and `SoftKeyView` classes. The patch now runs after the existing keyboard layout callback completes and applies theme-aware translucent gradient surfaces, reflective strokes, rounded keycaps, and native ripple feedback to the existing key views. It does not replace the input engine, key views, touch listeners, or hitboxes.
 
-Android does not provide a general-purpose backdrop blur for arbitrary keyboard child views. This implementation uses a lightweight frosted-glass visual treatment instead of applying `RenderEffect` to key content (which would blur the characters themselves). The suggestion strip now has a separate experimental hook targeting Gboard 18.6.3.100's `LatinFixedCountCandidatesHolderView.onSizeChanged(IIII)V`; it applies a single continuous rounded glass surface to the existing candidate container. This target was confirmed in the uploaded APK's DEX metadata. The source patch must still pass CI, be applied to the exact supported base, and receive on-device checks for typing, gestures, accessibility, rotation, and performance before an APK is labelled stable.
+Android does not provide a general-purpose backdrop blur for arbitrary keyboard child views. This implementation uses a lightweight frosted-glass visual treatment instead of applying `RenderEffect` to key content (which would blur the characters themselves). The suggestion strip now has a separate experimental hook targeting Gboard 18.6.3.100's `LatinFixedCountCandidatesHolderView.onSizeChanged(IIII)V`; it applies a single continuous rounded glass surface to the existing candidate container. This target was confirmed in the uploaded APK's DEX metadata. The source patch has not yet passed CI or been applied to an output APK. It must be built, applied to the exact supported base, and receive on-device checks for typing, gestures, accessibility, rotation, and performance before an APK is labelled stable.
 
 ---
 
