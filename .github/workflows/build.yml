@@ -58,6 +58,8 @@ jobs:
           # apply the exact bundle compiled by this workflow, not a stale copy.
           mkdir -p patches
           cp "$MPP_FILE" patches/PixelBoard.mpp
+          # Include the standalone patcher in the CI artifact for reproducible local APK builds.
+          cp tools/patcher.jar release-assets/patcher.jar
 
       - name: Check APK build configuration
         if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/')
