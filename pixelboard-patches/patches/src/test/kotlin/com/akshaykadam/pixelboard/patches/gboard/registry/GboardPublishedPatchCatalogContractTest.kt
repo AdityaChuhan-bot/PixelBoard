@@ -7,7 +7,6 @@ import com.akshaykadam.pixelboard.patches.gboard.features.keyboard.gboardLiquidG
 import com.akshaykadam.pixelboard.patches.shared.Constants.COMPATIBILITY_GBOARD
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertSame
-import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
