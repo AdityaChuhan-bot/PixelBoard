@@ -138,7 +138,8 @@ val gboardPackageRenamePatch = gboardPublicResourcePatch(
     }
 }
 
-val gboardLiquidGlassFeaturePatch = resourcePatch(
+val gboardLiquidGlassFeaturePatch = gboardPublicResourcePatch(
+    featureId = "liquid_glass_keyboard",
     name = "Liquid Glass Keyboard",
     description = "Apply translucent glass styling to Gboard keys and the suggestion strip.",
     default = true,
