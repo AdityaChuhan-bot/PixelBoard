@@ -2,6 +2,9 @@ package com.akshaykadam.pixelboard.patches.gboard.registry
 
 import com.google.gson.JsonParser
 import com.akshaykadam.pixelboard.patches.gboard.shared.generated.GboardTargetAdmission
+import com.akshaykadam.pixelboard.patches.gboard.features.keyboard.gboardLiquidGlassKeyboardPatch
+import com.akshaykadam.pixelboard.patches.gboard.features.keyboard.gboardLiquidGlassSuggestionStripPatch
+import com.akshaykadam.pixelboard.patches.shared.Constants.COMPATIBILITY_GBOARD
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertSame
 import org.junit.Assert.assertTrue
@@ -13,7 +16,7 @@ class GboardPublishedPatchCatalogContractTest {
         val registrations = GboardPublishedPatchCatalog.publishedRegistrations
 
         assertTrue(registrations.isNotEmpty())
-        assertEquals(4, registrations.size)
+        assertEquals(5, registrations.size)
         assertEquals(registrations.size, registrations.map { patch -> patch.name }.distinct().size)
         assertSame(
             gboardAdvancedVoiceTypingPatch,
@@ -30,6 +33,42 @@ class GboardPublishedPatchCatalogContractTest {
         assertSame(
             gboardPackageRenamePatch,
             registrations.single { patch -> patch.name == "Package Rename" },
+        )
+        assertSame(
+            gboardLiquidGlassFeaturePatch,
+            registrations.single { patch -> patch.name == "Liquid Glass Keyboard" },
+        )
+    }
+
+    @Test
+    fun liquidGlassFeaturePublishesBothRuntimeHooksForEverySupportedGboardVersion() {
+        val patch = gboardLiquidGlassFeaturePatch
+
+        assertEquals("Liquid Glass Keyboard", patch.name)
+        assertTrue(patch.default)
+        assertEquals(2, patch.dependencies.size)
+        assertSame(
+            setOf(gboardLiquidGlassKeyboardPatch, gboardLiquidGlassSuggestionStripPatch),
+            patch.dependencies.toSet(),
+        )
+        assertSame(COMPATIBILITY_GBOARD, patch.compatibility?.single())
+
+        val published = generatedPublishedPatches().single { row ->
+            row.get("name").asString == "Liquid Glass Keyboard"
+        }
+        assertTrue(published.get("use").asBoolean)
+        assertEquals(
+            listOf(
+                "18.0.3.954559732-release-arm64-v8a",
+                "18.3.1.977415014-beta-arm64-v8a",
+                "18.3.1.977415014-release-arm64-v8a",
+                "18.4.1.985164140-release-arm64-v8a",
+                "18.5.3.993608717-release-arm64-v8a",
+                "18.6.3.1002251336-release-arm64-v8a",
+            ),
+            published.getAsJsonObject("compatiblePackages")
+                .getAsJsonArray("com.google.android.inputmethod.latin")
+                .map { version -> version.asString },
         )
     }
 
