@@ -15,6 +15,9 @@
                 "options": {
                     "app_display_name": "PixelBoard"
                 }
+            },
+            "Liquid Glass Keyboard": {
+                "enabled": true
             }
         }
     }
