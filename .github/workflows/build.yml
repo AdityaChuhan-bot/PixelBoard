@@ -55,15 +55,6 @@ jobs:
           mkdir -p patches
           cp "$MPP_FILE" patches/PixelBoard.mpp
 
-      - name: Upload CI artifacts
-        if: github.event_name != 'push' || !startsWith(github.ref, 'refs/tags/')
-        uses: actions/upload-artifact@v4
-        with:
-          name: PixelBoard-build
-          path: release-assets/*
-          if-no-files-found: error
-          retention-days: 30
-
       - name: Check APK build configuration
         if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/')
         id: apk_config
@@ -100,6 +91,15 @@ jobs:
             ./build.sh input/gboard.apk
           test -s output/PixelBoard.apk
           cp output/PixelBoard.apk release-assets/PixelBoard.apk
+
+      - name: Upload CI artifacts
+        if: github.event_name != 'push' || !startsWith(github.ref, 'refs/tags/')
+        uses: actions/upload-artifact@v4
+        with:
+          name: PixelBoard-build
+          path: release-assets/*
+          if-no-files-found: error
+          retention-days: 30
 
       - name: Publish GitHub Release
         if: startsWith(github.ref, 'refs/tags/')
