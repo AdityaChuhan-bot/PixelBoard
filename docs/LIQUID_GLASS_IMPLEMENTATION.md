@@ -4,33 +4,37 @@
 
 Add an Apple-inspired Liquid Glass visual treatment to the existing Gboard-based PixelBoard keyboard. This is a renderer-level modification, not a standalone keyboard screen or a separate keyboard application.
 
-## Required visual behavior
+## Current implementation
 
-- Keyboard background: translucent dark/light surface with a restrained blur or a visually consistent fallback.
-- Keycaps: semi-transparent surfaces, subtle gradients, fine reflective edges, clear legends, and distinct action-key treatment.
-- Suggestion row: one continuous floating glass surface that remains legible while suggestions update.
-- Interaction: short scale/brightness feedback and native popup previews without delaying input dispatch.
-- Layouts: portrait, landscape, split keyboard, and accessibility font/display scaling.
+The repository contains two bytecode hooks and one Android runtime:
 
-## Non-negotiable compatibility
+- `SoftKeyboardView.onLayout(ZIIII)V` invokes `GboardLiquidGlassRuntime.applyToKeyboard(ViewGroup)` after Gboard lays out its keyboard children.
+- `LatinFixedCountCandidatesHolderView.onSizeChanged(IIII)V` invokes `GboardLiquidGlassRuntime.applyToSuggestionStrip(ViewGroup)` after the suggestion container changes size.
+- The runtime applies theme-aware translucent gradients, rounded corners, reflective strokes, and native ripple feedback to the keyboard root, detected `SoftKeyView` descendants, and suggestion strip.
+- Existing backgrounds and view padding are retained, and applied drawables are cached to avoid stacking layers on repeated layout callbacks.
 
-Preserve Gboard's existing input connection, key hitboxes, gesture typing, language layouts, accessibility/TalkBack semantics, voice typing, clipboard, OCR, emoji, and AI Writing Tools. Rendering must remain GPU-light on mid-range devices; blur must have a fallback and must not be applied as an expensive independent shader to every key.
+The public patch registry now exposes these two hooks together as one selectable **Liquid Glass Keyboard** patch. It is enabled by default and declares the repository's Gboard compatibility target. A registry contract test verifies that the public patch includes both hooks and is included in the generated published inventory.
 
-## Repository audit
+## Visual limitations
 
-The uploaded PixelBoard 1.3.5 APK contains Gboard 18.6.3.100 and exposes `SoftKeyboardView.onLayout(ZIIII)V` plus the `SoftKeyView` view hierarchy. A new bytecode patch injects `GboardLiquidGlassRuntime.applyToKeyboard(ViewGroup)` at the beginning of that existing layout method. The runtime styles the keyboard root and actual `SoftKeyView` instances using theme-aware translucent gradients, reflective strokes, and native ripple feedback. It caches applied drawables to avoid allocating a new background on every layout pass. A second bytecode hook targets `LatinFixedCountCandidatesHolderView.onSizeChanged(IIII)V`, the existing `LinearLayout` used for the Latin candidate/suggestion row, and applies a single rounded glass surface to that container.
+This is a lightweight frosted-glass approximation, not a complete reproduction of Apple's Liquid Glass. It does not implement true backdrop blur, dynamic refraction, or animated light reflections. Android does not expose a general-purpose backdrop blur for arbitrary child views; applying a blur effect directly to key views would also blur their legends and reduce readability.
 
-The runtime intentionally does not apply `RenderEffect` to the key views: that would blur key labels as well as the background. Android does not expose a general-purpose backdrop blur for arbitrary child views, so this is a frosted-glass approximation. Suggestion-strip styling is now represented by a separate experimental patch hook. It is not yet device-validated and must be tested with live candidate updates, autocorrection, voice typing, and landscape layouts. The uploaded APK is already a patched PixelBoard build, not a stock Gboard base, and cannot automatically be treated as a clean input to the existing full patch pipeline.
+## Compatibility and regression requirements
 
-## Implementation gate
+Preserve Gboard's existing input connection, key hitboxes, gesture typing, language layouts, accessibility/TalkBack semantics, voice typing, clipboard, OCR, emoji, and AI Writing Tools. Rendering must remain GPU-light on mid-range devices.
 
-Do not claim the Liquid Glass feature is complete until the new hook passes source-level and patch-application checks, and the resulting APK passes:
+## Validation status
 
-1. Source-level patch contract tests and CI build.
-2. Patch application against Gboard 18.6.3.100.
-3. APK resource and DEX verification.
-4. Install/launch and keyboard smoke tests on Android 16.
-5. Typing latency, touch geometry, rotation, and accessibility regression checks.
+Registry wiring and its source-level contract test have been added. The feature must not be considered release-ready until the following checks pass:
+
+1. Patch-module compilation and all patch tests.
+2. Generated patch inventory includes **Liquid Glass Keyboard** with both dependencies.
+3. Patch application succeeds against the exact supported Gboard APK version.
+4. APK resource and DEX verification.
+5. Install/launch and keyboard smoke tests on Android 16.
+6. Typing latency, touch geometry, rotation, accessibility, suggestion updates, autocorrection, and voice-typing regression checks.
+
+A green source build does not replace patch-application validation or testing on a physical device.
 
 ## Release pipeline
 
